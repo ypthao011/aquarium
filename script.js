@@ -831,23 +831,50 @@ function init() {
     document.addEventListener('touchmove', onMouseMove, { passive: false });
     document.addEventListener('touchend', endDrag);
 
-    // Shop
+    // Shop - Mouse events
     elements.shopBtn.addEventListener('click', openShop);
     elements.closeShop.addEventListener('click', closeShop);
+
+    // Shop - Touch events for mobile
+    elements.shopBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        openShop();
+    });
+    elements.closeShop.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        closeShop();
+    });
 
     // Shop items
     const shopItems = document.querySelectorAll('.shop-item');
     shopItems.forEach(item => {
         const buyBtn = item.querySelector('.buy-button');
+        // Mouse event
         buyBtn.addEventListener('click', () => {
+            const type = item.dataset.creature;
+            buyCreature(type);
+        });
+        // Touch event for mobile
+        buyBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
             const type = item.dataset.creature;
             buyCreature(type);
         });
     });
 
-    // Menu
+    // Menu - Mouse events
     elements.hamburgerBtn.addEventListener('click', openMenu);
     elements.closeMenu.addEventListener('click', closeMenu);
+
+    // Menu - Touch events for mobile
+    elements.hamburgerBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        openMenu();
+    });
+    elements.closeMenu.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        closeMenu();
+    });
 
     // Fix hamburger menu CSS (temporary fix for corrupted CSS file)
     const style = document.createElement('style');
