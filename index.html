@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Interactive Aquarium Game - Feed your fish, earn gold, and build your underwater paradise!">
+    <title>My Aquarium - Interactive Fish Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger-menu" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Stats Overlay Panel -->
+        <div class="stats-overlay">
+            <div class="stat-item gold-stat" title="Your current gold balance">
+                <span class="stat-icon">💰</span>
+                <span class="stat-value" id="gold-amount">50</span>
+            </div>
+            <div class="stat-item creatures-stat" title="Number of creatures in your aquarium">
+                <span class="stat-icon">🐠</span>
+                <span class="stat-value" id="creature-count">1</span>
+            </div>
+            <div class="stat-item passive-stat" title="Passive gold earned every 10 seconds">
+                <span class="stat-icon">⏱️</span>
+                <span class="stat-value">
+                    <span id="passive-gold">+1</span>
+                    <span class="timer-text">(<span id="passive-timer">10</span>s)</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Aquarium Tank (Fullscreen) -->
+        <div class="aquarium-tank" id="aquarium">
+            <div class="water-overlay"></div>
+            <div class="bubbles-container" id="bubbles"></div>
+            <div class="creatures-container" id="creatures"></div>
+            <div class="food-container" id="food-container"></div>
+
+            <!-- Tank decorations -->
+            <div class="tank-floor"></div>
+            <div class="decorations">
+                <div class="coral coral-1"></div>
+                <div class="coral coral-2"></div>
+                <div class="rock rock-1"></div>
+                <div class="rock rock-2"></div>
+                <div class="seaweed seaweed-1"></div>
+                <div class="seaweed seaweed-2"></div>
+            </div>
+        </div>
+
+        <!-- Side Menu Panel -->
+        <div class="side-menu" id="side-menu">
+            <div class="menu-header">
+                <h2>Menu</h2>
+                <button class="close-menu" id="close-menu">×</button>
+            </div>
+            <div class="menu-content">
+                <button class="menu-button" id="shop-btn-menu">
+                    <span class="menu-icon">🛒</span>
+                    <span>Shop</span>
+                </button>
+
+                <div class="menu-control-group">
+                    <div class="menu-label-row">
+                        <span class="menu-icon">🎵</span>
+                        <span class="menu-label">Music Volume</span>
+                    </div>
+                    <input type="range" id="music-volume" class="volume-slider" min="0" max="1" step="0.05" value="0.3">
+                </div>
+
+                <div class="menu-info">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>🍖 Click to drop food</li>
+                        <li>🐠 Drag creatures to move them</li>
+                        <li>💰 Drag to sell zone to sell</li>
+                        <li>🌟 Feed 5 times to grow</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Modal -->
+        <div class="modal" id="shop-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Aquarium Shop</h2>
+                    <button class="close-button" id="close-shop">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="shop-grid">
+                        <!-- Ordered from lowest to highest price -->
+                        <div class="shop-item" data-creature="fish" data-price="30">
+                            <div class="item-icon">🐠</div>
+                            <div class="item-name">Tropical Fish</div>
+                            <div class="item-description">A colorful friend for your tank</div>
+                            <button class="buy-button">
+                                <span>Buy for 30 💰</span>
+                            </button>
+                        </div>
+                        <div class="shop-item" data-creature="crab" data-price="40">
+                            <div class="item-icon">🦀</div>
+                            <div class="item-name">Crab</div>
+                            <div class="item-description">Sideways walking buddy</div>
+                            <button class="buy-button">
+                                <span>Buy for 40 💰</span>
+                            </button>
+                        </div>
+                        <div class="shop-item" data-creature="jellyfish" data-price="50">
+                            <div class="item-icon">🎐</div>
+                            <div class="item-name">Jellyfish</div>
+                            <div class="item-description">Graceful floating beauty</div>
+                            <button class="buy-button">
+                                <span>Buy for 50 💰</span>
+                            </button>
+                        </div>
+                        <div class="shop-item" data-creature="octopus" data-price="80">
+                            <div class="item-icon">🐙</div>
+                            <div class="item-name">Octopus</div>
+                            <div class="item-description">Intelligent eight-armed wonder</div>
+                            <button class="buy-button">
+                                <span>Buy for 80 💰</span>
+                            </button>
+                        </div>
+                        <div class="shop-item" data-creature="turtle" data-price="100">
+                            <div class="item-icon">🐢</div>
+                            <div class="item-name">Sea Turtle</div>
+                            <div class="item-description">Wise and peaceful swimmer</div>
+                            <button class="buy-button">
+                                <span>Buy for 100 💰</span>
+                            </button>
+                        </div>
+                        <div class="shop-item" data-creature="dolphin" data-price="150">
+                            <div class="item-icon">🐬</div>
+                            <div class="item-name">Dolphin</div>
+                            <div class="item-description">Playful and energetic</div>
+                            <button class="buy-button">
+                                <span>Buy for 150 💰</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sell Zone -->
+        <div class="sell-zone" id="sell-zone">
+            <div class="sell-icon">💰</div>
+            <div class="sell-text">Sell</div>
+        </div>
+
+        <!-- Notification System -->
+        <div class="notifications" id="notifications"></div>
+    </div>
+
+    <script src="audio.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
