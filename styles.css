@@ -39,39 +39,6 @@
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
     --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.5);
 
-    /* Transitions */
-    --transition-fast: 0.2s ease;
-    --transition-medium: 0.3s ease;
-    --transition-slow: 0.5s ease;
-}
-
-/* ===== RESET & BASE STYLES ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Outfit', sans-serif;
-    background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-dark) 100%);
-    overflow: hidden;
-    color: white;
-    width: 100vw;
-    height: 100vh;
-}
-
-/* ===== GAME CONTAINER ===== */
-.game-container {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-}
-
-/* ===== HAMBURGER MENU ===== */
-.hamburger-menu {
-    position: fixed;
     top: var(--spacing-md);
     left: var(--spacing-md);
     width: 50px;

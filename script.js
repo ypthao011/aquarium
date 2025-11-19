@@ -101,6 +101,11 @@ class Creature {
             }
         });
 
+        // Add touch support for mobile
+        creature.addEventListener('touchstart', (event) => {
+            startDrag(this, event);
+        }, { passive: false });
+
         // Add right click to sell (optional, but we have drag-to-sell now)
         creature.addEventListener('contextmenu', (event) => {
             event.preventDefault();
@@ -364,8 +369,13 @@ function startDrag(creature, event) {
     draggedCreature = creature;
 
     const rect = elements.aquarium.getBoundingClientRect();
-    dragOffset.x = event.clientX - rect.left - creature.x;
-    dragOffset.y = event.clientY - rect.top - creature.y;
+
+    // Handle both mouse and touch events
+    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+    dragOffset.x = clientX - rect.left - creature.x;
+    dragOffset.y = clientY - rect.top - creature.y;
 
     elements.aquarium.style.cursor = 'grabbing';
     creature.element.style.zIndex = '100';
@@ -435,8 +445,13 @@ function onMouseMove(event) {
     if (!draggedCreature) return;
 
     const rect = elements.aquarium.getBoundingClientRect();
-    const newX = event.clientX - rect.left - dragOffset.x;
-    const newY = event.clientY - rect.top - dragOffset.y;
+
+    // Handle both mouse and touch events
+    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+    const newX = clientX - rect.left - dragOffset.x;
+    const newY = clientY - rect.top - dragOffset.y;
 
     const bounds = elements.aquarium.getBoundingClientRect();
     const creatureBounds = draggedCreature.element.getBoundingClientRect();
@@ -638,11 +653,15 @@ function buyCreature(type) {
 }
 
 function handleAquariumClick(event) {
+    // Handle both mouse and touch events
+    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
     // If in placement mode
     if (gameState.placementMode.active) {
         const rect = elements.aquarium.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
         const type = gameState.placementMode.creatureType;
         const config = creatureTypes[type];
@@ -682,8 +701,8 @@ function handleAquariumClick(event) {
             updateUI();
 
             const rect = elements.aquarium.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
 
             const food = new Food(x, y);
             gameState.activeFoods.push(food);
@@ -793,10 +812,15 @@ function init() {
 
     // Event Listeners
     elements.aquarium.addEventListener('click', handleAquariumClick);
+    elements.aquarium.addEventListener('touchend', handleAquariumClick, { passive: false });
 
-    // Drag and Drop
+    // Drag and Drop - Mouse
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', endDrag);
+
+    // Drag and Drop - Touch
+    document.addEventListener('touchmove', onMouseMove, { passive: false });
+    document.addEventListener('touchend', endDrag);
 
     // Shop
     elements.shopBtn.addEventListener('click', openShop);
