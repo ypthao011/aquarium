@@ -81,6 +81,10 @@ class Creature {
         creature.style.left = `${this.x}px`;
         creature.style.top = `${this.y}px`;
 
+        // Enable touch dragging on mobile
+        creature.style.touchAction = 'none';
+        creature.style.userSelect = 'none';
+
         // Create hunger bar
         const hungerBar = document.createElement('div');
         hungerBar.className = 'hunger-bar';
@@ -443,6 +447,11 @@ function updateStatSheetPosition(creature) {
 
 function onMouseMove(event) {
     if (!draggedCreature) return;
+
+    // Prevent default touch behavior (scrolling)
+    if (event.touches) {
+        event.preventDefault();
+    }
 
     const rect = elements.aquarium.getBoundingClientRect();
 
