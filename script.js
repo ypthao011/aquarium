@@ -862,19 +862,22 @@ function init() {
         });
     });
 
-    // Menu - Mouse events
-    elements.hamburgerBtn.addEventListener('click', openMenu);
-    elements.closeMenu.addEventListener('click', closeMenu);
-
-    // Menu - Touch events for mobile
-    elements.hamburgerBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
+    // Menu - Unified event handling for mouse and touch
+    const handleMenuOpen = (e) => {
+        console.log('Menu open triggered:', e.type);
+        if (e.type === 'touchend') e.preventDefault();
         openMenu();
-    });
-    elements.closeMenu.addEventListener('touchend', (e) => {
-        e.preventDefault();
+    };
+    const handleMenuClose = (e) => {
+        console.log('Menu close triggered:', e.type);
+        if (e.type === 'touchend') e.preventDefault();
         closeMenu();
-    });
+    };
+
+    elements.hamburgerBtn.addEventListener('click', handleMenuOpen);
+    elements.hamburgerBtn.addEventListener('touchend', handleMenuOpen);
+    elements.closeMenu.addEventListener('click', handleMenuClose);
+    elements.closeMenu.addEventListener('touchend', handleMenuClose);
 
     // Fix hamburger menu CSS (temporary fix for corrupted CSS file)
     const style = document.createElement('style');
@@ -883,11 +886,11 @@ function init() {
             position: fixed !important;
             top: 1.5rem !important;
             left: 1.5rem !important;
-            width: 50px !important;
-            height: 50px !important;
-            background: hsla(0, 0%, 100%, 0.2) !important;
+            width: 60px !important;
+            height: 60px !important;
+            background: rgba(255, 255, 255, 0.3) !important;
             backdrop-filter: blur(10px) !important;
-            border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
+            border: 3px solid rgba(255, 255, 255, 0.5) !important;
             border-radius: 12px !important;
             display: flex !important;
             flex-direction: column !important;
@@ -897,7 +900,20 @@ function init() {
             cursor: pointer !important;
             z-index: 1500 !important;
             transition: all 0.3s ease !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: rgba(255, 215, 0, 0.3) !important;
+        }
+        .hamburger-menu:active {
+            transform: scale(0.95) !important;
+            background: rgba(255, 215, 0, 0.4) !important;
+        }
+        .hamburger-menu span {
+            width: 32px !important;
+            height: 4px !important;
+            background: white !important;
+            border-radius: 2px !important;
+            pointer-events: none !important;
         }
         * {
             margin: 0;
@@ -907,7 +923,7 @@ function init() {
         body {
             -webkit-user-select: none;
             user-select: none;
-            touch-action: none;
+            touch-action: pan-x pan-y;
         }
         .game-container {
             width: 100vw;
