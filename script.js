@@ -848,6 +848,48 @@ function init() {
     // Menu
     elements.hamburgerBtn.addEventListener('click', openMenu);
     elements.closeMenu.addEventListener('click', closeMenu);
+
+    // Fix hamburger menu CSS (temporary fix for corrupted CSS file)
+    const style = document.createElement('style');
+    style.textContent = `
+        .hamburger-menu {
+            position: fixed !important;
+            top: 1.5rem !important;
+            left: 1.5rem !important;
+            width: 50px !important;
+            height: 50px !important;
+            background: hsla(0, 0%, 100%, 0.2) !important;
+            backdrop-filter: blur(10px) !important;
+            border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            cursor: pointer !important;
+            z-index: 1500 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: none;
+        }
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // Start the game
